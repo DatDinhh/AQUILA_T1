@@ -1,0 +1,68 @@
+{
+  "name": "Aquila-T1 CSR Map v1.0",
+  "width_bits": 32,
+  "endianness": "little",
+  "description": "Control/status registers for a single Aquila-T1 accelerator tile (APB3). Addresses are byte-addressed.",
+  "registers": [
+    {
+      "name": "TILE_ID",
+      "addr": "0x0000",
+      "desc": "Design identifier, revision, and feature bitmap.",
+      "fields": [
+        { "name": "DESIGN_ID", "msb": 31, "lsb": 16, "reset": "0x4151", "access": "ro", "desc": "'AQ' in ASCII hex (0x41 0x51)" },
+        { "name": "REV",       "msb": 15, "lsb":  8, "reset": "0x01",   "access": "ro", "desc": "minor revision" },
+        { "name": "FEATURES",  "msb":  7, "lsb":  0, "reset": "0x00",   "access": "ro", "desc": "feature flags (reserved for now)" }
+      ]
+    },
+    {
+      "name": "ARRAY_CFG",
+      "addr": "0x0010",
+      "desc": "Compute array configuration.",
+      "fields": [
+        { "name": "ENABLE",       "msb": 0, "lsb": 0, "reset": 0, "access": "rw", "desc": "1: enable array, 0: disable" },
+        { "name": "MODE",         "msb": 3, "lsb": 1, "reset": 1, "access": "rw", "desc": "0:reserved 1:INT8 2:INT4 3:FP8 4:BF16 (implementation-defined)" },
+        { "name": "SPARSE_2OF4",  "msb": 4, "lsb": 4, "reset": 0, "access": "rw", "desc": "enable 2:4 structured sparsity expansion" }
+      ]
+    },
+    {
+      "name": "PART_A_MASK0",
+      "addr": "0x0020",
+      "desc": "Activation bank partition mask (bit i selects bank i for A). For GB_BANKS ≤ 32.",
+      "fields": [
+        { "name": "MASK", "msb": 31, "lsb": 0, "reset": "0x00000000", "access": "rw" }
+      ]
+    },
+    {
+      "name": "PART_W_MASK0",
+      "addr": "0x0040",
+      "desc": "Weight bank partition mask (bit i selects bank i for W). For GB_BANKS ≤ 32.",
+      "fields": [
+        { "name": "MASK", "msb": 31, "lsb": 0, "reset": "0x00000000", "access": "rw" }
+      ]
+    },
+    {
+      "name": "PART_C_MASK0",
+      "addr": "0x0060",
+      "desc": "Output/partials bank partition mask (bit i selects bank i for C). For GB_BANKS ≤ 32.",
+      "fields": [
+        { "name": "MASK", "msb": 31, "lsb": 0, "reset": "0x00000000", "access": "rw" }
+      ]
+    },
+    {
+      "name": "DOORBELL",
+      "addr": "0x0080",
+      "desc": "Write-1-to-pulse (W1P) doorbell for work submission. Read returns zero.",
+      "fields": [
+        { "name": "RING", "msb": 0, "lsb": 0, "reset": 0, "access": "w1p" }
+      ]
+    },
+    {
+      "name": "IRQ_MASK",
+      "addr": "0x0084",
+      "desc": "Interrupt mask register for tile_irq aggregation (low-active mask not used; 1 permits interrupt class).",
+      "fields": [
+        { "name": "MASK", "msb": 7, "lsb": 0, "reset": "0xFF", "access": "rw" }
+      ]
+    }
+  ]
+}
